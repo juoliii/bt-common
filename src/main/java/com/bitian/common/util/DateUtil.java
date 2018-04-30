@@ -138,6 +138,18 @@ public class DateUtil {
 		return ret;
 	}
 	
+	public static long getTimeMillisFromDateString(String time,String pattern){
+		Date date = null;
+		SimpleDateFormat sf=formatPool.get();
+		sf.applyPattern(pattern);
+		try {
+			date = sf.parse(time);
+		} catch (ParseException e) {
+			return 0;
+		}
+		return date.getTime();
+	}
+	
 	/**
 	 * 获取当前毫秒数
 	 * @return
@@ -147,6 +159,8 @@ public class DateUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getCurrentDateTimeAsLong());
+//		System.out.println(getCurrentDateTimeAsLong());
+		long time=getTimeMillisFromDateString(getCurrentDate(), ONLY_DATE);
+		System.out.println(time);
 	}
 }

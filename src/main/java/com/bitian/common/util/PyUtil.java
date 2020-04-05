@@ -35,8 +35,9 @@ public class PyUtil {
 					srcArry = PinyinHelper.toHanyuPinyinStringArray(srcChar[i],
 							format);
 					result += srcArry[0];
-				} else
+				} else{
 					result += Character.toString(srcChar[i]);
+				}
 			}
 			return result;
 		} catch (BadHanyuPinyinOutputFormatCombination e1) {
@@ -67,9 +68,4 @@ public class PyUtil {
 		return result;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(getFull("你大爷wefwef"));;
-	}
-	
-
 }

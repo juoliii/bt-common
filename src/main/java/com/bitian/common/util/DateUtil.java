@@ -31,6 +31,7 @@ public class DateUtil {
 	public static String DATE_TIME_N = "yyyyMMddHHmmss";
 
 	private static ThreadLocal<SimpleDateFormat> formatPool = new ThreadLocal<SimpleDateFormat>() {
+		@Override
 		protected synchronized SimpleDateFormat initialValue() {
 			return new SimpleDateFormat();
 		}
@@ -159,7 +160,6 @@ public class DateUtil {
 	}
 
 	public static void main(String[] args) {
-//		System.out.println(getCurrentDateTimeAsLong());
 		long time=getTimeMillisFromDateString(getCurrentDate(), ONLY_DATE);
 		System.out.println(time);
 	}

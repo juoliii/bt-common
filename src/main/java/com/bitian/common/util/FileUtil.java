@@ -9,7 +9,7 @@ import java.util.Date;
 public class FileUtil {
 	
 	public static long copyFile(File source, File target) throws Exception {
-		long time = new Date().getTime();
+		long time = System.currentTimeMillis();
 		int length = 2097152;
 		FileInputStream in = new FileInputStream(source);
 		FileOutputStream out = new FileOutputStream(target);
@@ -21,7 +21,7 @@ public class FileUtil {
 				out.close();
 				inC.close();
 				outC.close();
-				return new Date().getTime() - time;
+				return System.currentTimeMillis() - time;
 			}
 			if ((inC.size() - inC.position()) < 20971520){
 				length = (int) (inC.size() - inC.position());

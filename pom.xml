@@ -4,7 +4,7 @@
 
   <groupId>com.bitian.common</groupId>
   <artifactId>bt-common</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>bt-common</name>
@@ -35,6 +35,18 @@
 		<artifactId>pinyin4j</artifactId>
 		<version>2.5.0</version>
 	</dependency>
+
+	  <dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpclient</artifactId>
+		  <version>4.5.7</version>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>org.apache.httpcomponents</groupId>
+		  <artifactId>httpmime</artifactId>
+		  <version>4.5.7</version>
+	  </dependency>
 	
   </dependencies>
   <build>

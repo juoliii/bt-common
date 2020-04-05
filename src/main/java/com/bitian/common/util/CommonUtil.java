@@ -1,7 +1,12 @@
 package com.bitian.common.util;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
+/**
+ * @author admin
+ */
 public class CommonUtil {
 	
 	/**
@@ -54,4 +59,41 @@ public class CommonUtil {
         }  
         return ip;  
 	}
+
+    public static float twoDecimal(Number f){
+        return roundToFloat(f);
+    }
+
+    private static float roundToFloat(Number f){
+        return new BigDecimal(defaultZeroIfNull(f).toString()).setScale(2, RoundingMode.HALF_UP).floatValue();
+    }
+
+    public static Number defaultZeroIfNull(Number v){
+        return v == null ? 0 : v;
+    }
+
+    public static String getParamFromUrl(String url,String id){
+        if(null != url){
+            if(!url.startsWith("http")){
+                return url;
+            }
+            String[] arr = url.split("\\?");
+            if(arr.length > 0){
+                String params = arr[arr.length - 1];
+                arr = params.split("\\&");
+                if(arr.length > 0){
+                    for(String str : arr){
+                        String[] _arr = str.split("\\=");
+                        if(_arr.length > 1){
+                            if(_arr[0].equals(id)){
+                                return _arr[1];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
 }

@@ -2,8 +2,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.bitian.common</groupId>
-  <artifactId>bt-common</artifactId>
+  <groupId>com.bitian</groupId>
+  <artifactId>common</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -21,6 +21,13 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
+	  <dependency>
+		  <groupId>javax.servlet</groupId>
+		  <artifactId>javax.servlet-api</artifactId>
+		  <version>3.0.1</version>
+		  <scope>provided</scope>
+	  </dependency>
     
 	<dependency>
 		<groupId>com.belerweb</groupId>

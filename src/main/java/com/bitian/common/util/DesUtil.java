@@ -1,176 +1,149 @@
 package com.bitian.common.util;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.security.Key;
+import java.security.SecureRandom;
 import java.security.Security;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
 
-public class DesUtil{
-  
-  /** 字符串默认键值     */
-  private static String strDefaultKey = "juoliiibitian";
+/**
+ * des加密（ECB/Nopaddingm模式）
+ */
+public class DesUtil {
 
-  /** 加密工具     */
-  private Cipher encryptCipher = null;
+    /**
+     * 字符串默认键值
+     */
+    private static String strDefaultKey = "juoliiibitian";
 
-  /** 解密工具     */
-  private Cipher decryptCipher = null;
+    /**
+     * 加密工具
+     */
+    private Cipher encryptCipher = null;
 
-  /**  
-   * 将byte数组转换为表示16进制值的字符串， 如：byte[]{8,18}转换为：0813， 和public static byte[]  
-   * hexStr2ByteArr(String strIn) 互为可逆的转换过程  
-   *   
-   * @param arrB  
-   *            需要转换的byte数组  
-   * @return 转换后的字符串  
-   * @throws Exception  
-   *             本方法不处理任何异常，所有异常全部抛出  
-   */
-  public static String byteArr2HexStr(byte[] arrB) throws Exception {
-    int iLen = arrB.length;
-    // 每个byte用两个字符才能表示，所以字符串的长度是数组长度的两倍   
-    StringBuffer sb = new StringBuffer(iLen * 2);
-    for (int i = 0; i < iLen; i++) {
-      int intTmp = arrB[i];
-      // 把负数转换为正数   
-      while (intTmp < 0) {
-        intTmp = intTmp + 256;
-      }
-      // 小于0F的数需要在前面补0   
-      if (intTmp < 16) {
-        sb.append("0");
-      }
-      sb.append(Integer.toString(intTmp, 16));
+    /**
+     * 解密工具
+     */
+    private Cipher decryptCipher = null;
+
+    public static String byteArr2Base64Str(byte[] arrB) throws Exception {
+        byte b[]=Base64.encodeBase64(arrB);
+        return new String(b,"utf-8");
     }
-    return sb.toString();
-  }
 
-  /**  
-   * 将表示16进制值的字符串转换为byte数组， 和public static String byteArr2HexStr(byte[] arrB)  
-   * 互为可逆的转换过程  
-   *   
-   * @param strIn  
-   *            需要转换的字符串  
-   * @return 转换后的byte数组  
-   * @throws Exception  
-   *             本方法不处理任何异常，所有异常全部抛出  
-   * @author <a href="mailto:leo841001@163.com">LiGuoQing</a>  
-   */
-  public static byte[] hexStr2ByteArr(String strIn) throws Exception {
-    byte[] arrB = strIn.getBytes();
-    int iLen = arrB.length;
-    // 两个字符表示一个字节，所以字节数组长度是字符串长度除以2   
-    byte[] arrOut = new byte[iLen / 2];
-    for (int i = 0; i < iLen; i = i + 2) {
-      String strTmp = new String(arrB, i, 2);
-      arrOut[i / 2] = (byte) Integer.parseInt(strTmp, 16);
+    public static byte[] base64Str2ByteArr(String strIn) throws Exception {
+        return Base64.decodeBase64(strIn);
     }
-    return arrOut;
-  }
 
-  /**  
-   * 默认构造方法，使用默认密钥  
-   *   
-   * @throws Exception  
-   */
-  public DesUtil() throws Exception {
-    this(strDefaultKey);
-  }
-
-  /**  
-   * 指定密钥构造方法  
-   *   
-   * @param strKey  
-   *            指定的密钥  
-   * @throws Exception  
-   */
-  public DesUtil(String strKey) throws Exception {
-    Security.addProvider(new com.sun.crypto.provider.SunJCE());
-    Key key = getKey(strKey.getBytes());
-    encryptCipher = Cipher.getInstance("DES");
-    encryptCipher.init(Cipher.ENCRYPT_MODE, key);
-    decryptCipher = Cipher.getInstance("DES");
-    decryptCipher.init(Cipher.DECRYPT_MODE, key);
-  }
-
-  /**  
-   * 加密字节数组  
-   *   
-   * @param arrB  
-   *            需加密的字节数组  
-   * @return 加密后的字节数组  
-   * @throws Exception  
-   */
-  public byte[] encrypt(byte[] arrB) throws Exception {
-    return encryptCipher.doFinal(arrB);
-  }
-
-  /**  
-   * 加密字符串  
-   *   
-   * @param strIn  
-   *            需加密的字符串  
-   * @return 加密后的字符串  
-   * @throws Exception  
-   */
-  public String encrypt(String strIn) throws Exception {
-    return byteArr2HexStr(encrypt(strIn.getBytes()));
-  }
-
-  /**  
-   * 解密字节数组  
-   *   
-   * @param arrB  
-   *            需解密的字节数组  
-   * @return 解密后的字节数组  
-   * @throws Exception  
-   */
-  public byte[] decrypt(byte[] arrB) throws Exception {
-    return decryptCipher.doFinal(arrB);
-  }
-
-  /**  
-   * 解密字符串  
-   *   
-   * @param strIn  
-   *            需解密的字符串  
-   * @return 解密后的字符串  
-   * @throws Exception  
-   */
-  public String decrypt(String strIn) throws Exception {
-    return new String(decrypt(hexStr2ByteArr(strIn)));
-  }
-
-  /**  
-   * 从指定字符串生成密钥，密钥所需的字节数组长度为8位 不足8位时后面补0，超出8位只取前8位  
-   *   
-   * @param arrBTmp  
-   *            构成该字符串的字节数组  
-   * @return 生成的密钥  
-   * @throws java.lang.Exception  
-   */
-  private Key getKey(byte[] arrBTmp) throws Exception {
-    // 创建一个空的8位字节数组（默认值为0）   
-    byte[] arrB = new byte[8];
-    // 将原始字节数组转换为8位   
-    for (int i = 0; i < arrBTmp.length && i < arrB.length; i++) {
-      arrB[i] = arrBTmp[i];
+    /**
+     * 默认构造方法，使用默认密钥
+     *
+     * @throws Exception
+     */
+    public DesUtil() throws Exception {
+        this(strDefaultKey);
     }
-    // 生成密钥   
-    Key key = new javax.crypto.spec.SecretKeySpec(arrB, "DES");
-    return key;
-  }
 
-  public static void main(String[] args) {
-    try {
-      String test = "123456789";
-      DesUtil des = new DesUtil("leemenz");//自定义密钥   
-      System.out.println("加密前的字符：" + test);
-      System.out.println("加密后的字符：" + des.encrypt(test));
-      System.out.println("解密后的字符：" + des.decrypt(des.encrypt(test)));
+    /**
+     * 指定密钥构造方法
+     *
+     * @param strKey 指定的密钥
+     * @throws Exception
+     */
+    public DesUtil(String strKey) throws Exception {
+        Security.addProvider(new com.sun.crypto.provider.SunJCE());
+        //创建密钥规则
+        DESKeySpec keySpec = new DESKeySpec(strKey.getBytes());
+        //创建密钥工厂
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
+        //按照密钥规则生成密钥
+        SecretKey secretKey = keyFactory.generateSecret(keySpec);
+        encryptCipher = Cipher.getInstance("DES/ECB/NoPadding");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        decryptCipher = Cipher.getInstance("DES/ECB/NoPadding");
+        decryptCipher.init(Cipher.DECRYPT_MODE, secretKey);
     }
-    catch (Exception e) {
-      e.printStackTrace();
+
+    /**
+     * 加密字节数组
+     *
+     * @param arrB 需加密的字节数组
+     * @return 加密后的字节数组
+     * @throws Exception
+     */
+    public byte[] encrypt(byte[] arrB) throws Exception {
+        return encryptCipher.doFinal(arrB);
     }
-  }
+
+    /**
+     * 解密字节数组
+     *
+     * @param arrB 需解密的字节数组
+     * @return 解密后的字节数组
+     * @throws Exception
+     */
+    public byte[] decrypt(byte[] arrB) throws Exception {
+        return decryptCipher.doFinal(arrB);
+    }
+
+    /**
+     * 加密字符串
+     *
+     * @param strIn 需加密的字符串
+     * @return 加密后的字符串
+     * @throws Exception
+     */
+    public String encrypt(String strIn) throws Exception {
+        return byteArr2Base64Str(encrypt(strIn.getBytes()));
+    }
+
+    /**
+     * 解密字符串
+     *
+     * @param strIn 需解密的字符串
+     * @return 解密后的字符串
+     * @throws Exception
+     */
+    public String decrypt(String strIn) throws Exception {
+        return new String(decrypt(base64Str2ByteArr(strIn)),"utf-8");
+    }
+
+    public String encryptWithZeroPadding(String content) throws Exception{
+        byte []b=encryptCipher.doFinal(addZero(content.getBytes()));
+        return byteArr2Base64Str(b);
+    }
+
+    public static byte[] addZero(byte[] data) {
+        byte[] dataByte = data;
+
+        if (data.length % 8 != 0) {
+            byte[] temp = new byte[8 - data.length % 8];
+            dataByte = byteMerger(data, temp);
+        }
+        return dataByte;
+    }
+
+    public static byte[] byteMerger(byte[] bt1, byte[] bt2) {
+        byte[] bt3 = new byte[bt1.length + bt2.length];
+        System.arraycopy(bt1, 0, bt3, 0, bt1.length);
+        System.arraycopy(bt2, 0, bt3, bt1.length, bt2.length);
+        return bt3;
+    }
+
+    public static void main(String[] args) {
+        try {
+            DesUtil desUtil = new DesUtil("yuanheclient");
+            System.out.println(desUtil.decrypt("0z6dpOqwDjWd6NlUuG/YNPOiqD6VsByq3Gkldair1URO+BXsjDh9brbg2pWBan42NqwMvqZa/uefKKX+qEZLIzWDvePnIvcTRSqZ3A2xi7Y="));
+            //System.out.println(desUtil.encrypt("hahaha"));
+            //System.out.println(desUtil.decrypt("0YaVkBZPMgg="));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

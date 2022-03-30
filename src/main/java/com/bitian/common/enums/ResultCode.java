@@ -12,9 +12,7 @@ public enum ResultCode {
     NOT_FOUND(404, "请求的资源不存在"),
     OPERATE_ERROR(405, "操作失败，请求操作的资源不存在"),
     TIME_OUT(408, "请求超时"),
-
-    SERVER_ERROR(500, "服务器内部错误"),
-    SERVER_ERROR_NEED_SM(501, "请先实名认证"),
+    SERVER_ERROR(500, "服务器内部错误")
 ;
     private int code;
     private String msg;

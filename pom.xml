@@ -4,7 +4,7 @@
 
     <groupId>com.bitian</groupId>
     <artifactId>common</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>bt-common</name>
@@ -43,15 +43,15 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.11</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
             <version>4.5.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.11</version>
         </dependency>
 
     </dependencies>
@@ -60,7 +60,7 @@
         <repository>
             <id>juoliii-coding-demo-maven-repo</id>
             <name>maven-repo</name>
-            <url>https://juoliii-maven.pkg.coding.net/repository/coding-demo/maven-repo/</url>
+            <url>https://juoliii-maven.pkg.coding.net/repository/bt-common/maven-repo/</url>
         </repository>
     </distributionManagement>
 

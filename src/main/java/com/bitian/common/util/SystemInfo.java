@@ -30,11 +30,6 @@ public class SystemInfo {
 		}
 	}
 
-	/**
-	 * 单例模式获取对象
-	 * 
-	 * @return
-	 */
 	public static SystemInfo getInstance() {
 		if (currentSystem == null) {
 			currentSystem = new SystemInfo();
@@ -42,30 +37,15 @@ public class SystemInfo {
 		return currentSystem;
 	}
 
-	/**
-	 * 本地IP
-	 * 
-	 * @return IP地址
-	 */
 	public String getIP() {
 		String ip = localHost.getHostAddress();
 		return ip;
 	}
 
-	/**
-	 * 获取用户机器名称
-	 * 
-	 * @return
-	 */
 	public String getHostName() {
 		return localHost.getHostName();
 	}
 
-	/**
-	 * 获取C盘卷 序列号
-	 * 
-	 * @return
-	 */
 	public String getDiskNumber() {
 		String line = "";
 		String HdSerial = "";// 记录硬盘序列号
@@ -85,18 +65,12 @@ public class SystemInfo {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return HdSerial;
 	}
 
-	/**
-	 * 获取当前系统名称
-	 * 
-	 * @return 当前系统名，例如： windows xp
-	 */
 	public String getSystemName() {
 		Properties sysProperty = System.getProperties();
 		// 系统名称
@@ -121,10 +95,6 @@ public class SystemInfo {
 		return mac.toString().toUpperCase();
 	}
 
-	/**
-	 * 获取到操作系统的网卡物理地址信息
-	 * @return
-	 */
 	public List<String> getMacs() {
 		List<String> ret=new ArrayList<String>();
 		try {

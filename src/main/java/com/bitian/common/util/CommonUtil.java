@@ -9,11 +9,6 @@ import java.math.RoundingMode;
  */
 public class CommonUtil {
 	
-	/**
-	 * 判断是否为Ajax请求
-	 * @param request   HttpServletRequest
-	 * @return  是true, 否false
-	 */
 	public static boolean isAjaxRequest(HttpServletRequest request) {
 	    String requestType = request.getHeader("X-Requested-With");
 	    if (requestType != null && requestType.equals("XMLHttpRequest")) {
@@ -23,11 +18,6 @@ public class CommonUtil {
 	    }
 	}
 	
-	/**
-	 * 获取servlet访问IP
-	 * @param request
-	 * @return
-	 */
 	public static String getRequestRemoteIp(HttpServletRequest request){
 		String ip = request.getHeader("X-Forwarded-For");  
   

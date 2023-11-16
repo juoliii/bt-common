@@ -9,13 +9,6 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 public class PyUtil {
 
-	/**
-	 * 获取全部拼音
-	 * 
-	 * @param src
-	 *            原字符串
-	 * @return
-	 */
 	public static String getFull(String src) {
 
 		char[] srcChar = src.toCharArray();
@@ -46,13 +39,6 @@ public class PyUtil {
 		return result;
 	}
 
-	/**
-	 * 获取首字母拼音
-	 * 
-	 * @param str
-	 *            原字符串
-	 * @return
-	 */
 	public static String getFirst(String str) {
 
 		String result = "";

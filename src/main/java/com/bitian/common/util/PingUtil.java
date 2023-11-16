@@ -15,12 +15,6 @@ public class PingUtil {
         return status;
     }
 
-    /**
-     * 返回是否能ping通
-     * @param ipAddress
-     * @return
-     * @throws Exception
-     */
     public static boolean ping02(String ipAddress) throws Exception {
         String line = null;
         try {

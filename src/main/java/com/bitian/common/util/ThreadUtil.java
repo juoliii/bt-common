@@ -8,10 +8,6 @@ public class ThreadUtil {
 
 	public static ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(200);
 	
-	/**
-	 * 异步执行
-	 * @param runable
-	 */
 	public static void executeThread(Runnable runable){
 		executor.execute(runable);
 	}

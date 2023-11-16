@@ -31,8 +31,8 @@ import java.util.Map;
  * @author admin
  */
 public class HttpClientUtil {
-	public static final RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(30000).setConnectTimeout(30000)
-			.setConnectionRequestTimeout(30000).build();
+	public static final RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(60000).setConnectTimeout(60000)
+			.setConnectionRequestTimeout(60000).build();
 
 	private static HttpClientUtil instance = null;
 

@@ -6,7 +6,11 @@ import java.util.concurrent.*;
 
 public class ThreadUtil {
 
-	public static ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(200);
+	private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+	private static final int CORE_SIZE = CPU_COUNT * 4;
+	private static final int MAX_CORE_SIZE = CPU_COUNT * 8;
+
+	public static ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(MAX_CORE_SIZE*10);
 	
 	public static void executeThread(Runnable runable){
 		executor.execute(runable);

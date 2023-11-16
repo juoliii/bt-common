@@ -50,18 +50,6 @@ public class CommonUtil {
         return ip;  
 	}
 
-    public static float twoDecimal(Number f){
-        return roundToFloat(f);
-    }
-
-    private static float roundToFloat(Number f){
-        return new BigDecimal(defaultZeroIfNull(f).toString()).setScale(2, RoundingMode.HALF_UP).floatValue();
-    }
-
-    public static Number defaultZeroIfNull(Number v){
-        return v == null ? 0 : v;
-    }
-
     public static String getParamFromUrl(String url,String id){
         if(null != url){
             if(!url.startsWith("http")){

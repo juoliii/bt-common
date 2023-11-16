@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import sun.misc.BASE64Encoder;
 /**
  * MD5加密
- * @author 何浩
+ * @author juoliii
  *
  */
 public class MD5Util {

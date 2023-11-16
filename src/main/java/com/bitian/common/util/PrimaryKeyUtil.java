@@ -17,8 +17,4 @@ public class PrimaryKeyUtil {
 		UUID uuid=UUID.randomUUID();
 		return uuid.toString().replace("-", "");
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(getUUID());
-	}
 }

@@ -1,9 +1,6 @@
 package com.bitian.common.enums;
 
 public enum ResultCode {
-    /*
-    请求返回状态码和说明信息
-     */
     SUCCESS(200, "成功"),
     BAD_REQUEST(400, "参数或者语法不对"),
     UNAUTHORIZED(401, "认证失败"),

@@ -2,7 +2,9 @@ package com.bitian.common.exception;
 
 
 import com.bitian.common.dto.ResultJson;
+import lombok.Getter;
 
+@Getter
 public class CustomException extends RuntimeException{
 
 	private ResultJson resultJson;

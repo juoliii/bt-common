@@ -1,5 +1,6 @@
 package com.bitian.testmaven;
 
+import com.bitian.common.util.SystemInfo;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -34,5 +35,9 @@ public class AppTest
     public void testApp()
     {
         assertTrue( true );
+    }
+
+    public static void main(String[] args) {
+        System.out.println(SystemInfo.getInstance().getMacs());
     }
 }

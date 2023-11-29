@@ -2,6 +2,8 @@ package com.bitian.common.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author admin
@@ -19,4 +21,5 @@ public class NumberUtil {
     public static Number defaultZeroIfNull(Number v){
         return v == null ? 0 : v;
     }
+
 }

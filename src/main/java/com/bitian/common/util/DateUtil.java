@@ -23,28 +23,28 @@ public class DateUtil {
 			"yyyy-MM-dd"
 	};
 
-	public static Date now() {
-		return new Date();
+	public static String defaultPattern="yyyy-MM-dd HH:mm:ss";
+
+	/**
+	 * 格式化当前日期
+	 * @return
+	 */
+	public static String formatNow(){
+		return format(System.currentTimeMillis(),defaultPattern);
 	}
 
 	public static String format(Calendar calendar, String formatStr) {
-		if (StringUtils.isEmpty(formatStr)) {
-			formatStr = "yyyy-MM-dd HH:mm";
-		}
 		DateFormat format = new SimpleDateFormat(formatStr);
 		return format.format(calendar.getTime());
 	}
 
 	public static String format(long millis, String formatStr) {
-		if (StringUtils.isEmpty(formatStr)) {
-			formatStr = "yyyy-MM-dd HH:mm";
-		}
 		DateFormat format = new SimpleDateFormat(formatStr);
 		return format.format(millis);
 	}
 
 	public static String format(long millis) {
-		return format(millis, "yyyy-MM-dd HH:mm:ss");
+		return format(millis, defaultPattern);
 	}
 
 	public static int getHour() {
@@ -57,16 +57,6 @@ public class DateUtil {
 		c.set(year, month - 1, day, hour, min, send);
 		c.set(Calendar.MILLISECOND, hour == 0 ? 0 : 999);
 		return c.getTime();
-	}
-
-	public static Date now(int hour, int min, int send) {
-		return getCalendar(Calendar.getInstance(), hour, min, send).getTime();
-	}
-
-	public static Date yesterday(int hour, int min, int send) {
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_MONTH, -1);
-		return getCalendar(c, hour, min, send).getTime();
 	}
 
 	public static Date getCurrentYearFirstDay() {
@@ -229,7 +219,11 @@ public class DateUtil {
 		return c.get(Calendar.DAY_OF_MONTH);
 	}
 
-	public static long parseTimestamp(String str, String... formats) {
+	public static long parseDateStringToTimestamp(String str) {
+		return parseDateStringToTimestamp(str,fs);
+	}
+
+	public static long parseDateStringToTimestamp(String str, String... formats) {
 		if (StringUtils.isEmpty(str)) {
 			return 0;
 		}
@@ -246,130 +240,4 @@ public class DateUtil {
 		return null;
 	}
 
-	public static long parseDateStrToLong(String str) {
-		try {
-			return DateUtils.parseDate(str, fs).getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	public static long getStartTimestamp(String date) {
-		int length = StringUtils.length(date);
-		if (length == 7) {
-			Date d = parseDate(date, "yyyy-MM");
-			if (d != null) {
-				Calendar c = Calendar.getInstance();
-				c.setTime(d);
-				c.set(Calendar.DAY_OF_MONTH, 1);
-				return getCalendar(c, 0, 0, 0).getTimeInMillis();
-			}
-		} else if (length == 10) {
-			Date d = parseDate(date, "yyyy-MM-dd");
-			if (d != null) {
-				Calendar c = Calendar.getInstance();
-				c.setTime(d);
-				return getCalendar(c, 0, 0, 0).getTimeInMillis();
-			}
-		}
-		return 0;
-	}
-
-	public static long getEndTimestamp(String date) {
-		int length = StringUtils.length(date);
-		if (length == 7) {
-			Date d = parseDate(date, "yyyy-MM");
-			if (d != null) {
-				Calendar c = Calendar.getInstance();
-				c.setTime(d);
-				c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-				return getCalendar(c, 23, 59, 59).getTimeInMillis();
-			}
-		} else if (length == 10) {
-			Date d = parseDate(date, "yyyy-MM-dd");
-			if (d != null) {
-				Calendar c = Calendar.getInstance();
-				c.setTime(d);
-				return getCalendar(c, 23, 59, 59).getTimeInMillis();
-			}
-		} else if (length > 7 && length < 10) {
-			Date d = parseDate(date, "yyyy-MM-dd");
-			if (d != null) {
-				Calendar c = Calendar.getInstance();
-				c.setTime(d);
-				return getCalendar(c, 23, 59, 59).getTimeInMillis();
-			}
-		}
-		return 0;
-	}
-
-	public static String loadCurrentDateTime(int type) {
-		SimpleDateFormat sdf = null;
-		if (type == 0) {
-			sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		} else if (type == 1) {
-			sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		} else if (type == 2) {
-			sdf = new SimpleDateFormat("yyyy-MM-dd");
-		} else if (type == 3) {
-			sdf = new SimpleDateFormat("yyyyMMdd");
-		} else if (type == 4) {
-			sdf = new SimpleDateFormat("yyyy");
-		} else if (type == 5) {
-			sdf = new SimpleDateFormat("yyyy-MM");
-		} else if (type == 6) {
-			sdf = new SimpleDateFormat("yyyyMM");
-		} else if (type == 7) {
-			sdf = new SimpleDateFormat("MM");
-		} else if (type == 8) {
-			sdf = new SimpleDateFormat("yyyyMMddHHmmssS");
-		}
-		return sdf.format(new Date());
-	}
-
-	public static String getSuggstionShowTimeStr(long showTime) {
-		if (showTime > 0) {
-			Calendar now = Calendar.getInstance();
-			Calendar c = Calendar.getInstance();
-			c.setTimeInMillis(showTime);
-			if (now.get(Calendar.YEAR) == c.get(Calendar.YEAR)) {
-				if (now.get(Calendar.MONTH) == c.get(Calendar.MONTH)) {
-					int nowday = now.get(Calendar.DAY_OF_MONTH);
-					int cday = c.get(Calendar.DAY_OF_MONTH);
-					if (nowday == cday) {
-						return format(c, "HH:mm");
-					} else if (nowday == cday + 1) {
-						return format(c, "昨天 HH:mm");
-					}
-				}
-				return format(c, "MM月dd日 HH:mm");
-			}
-			return format(c, "yyyy年MM月dd日 HH:mm");
-		}
-		return "";
-	}
-
-
-	public static String getNeedTimeSubtractSystemTime(String needTime) {
-		long time = DateUtil.getEndTimestamp(needTime);
-		long sysTime = System.currentTimeMillis();
-		long milliseconds;
-		boolean isGo = false;
-		if (time > sysTime) {
-			milliseconds = time - sysTime;
-			isGo = true;
-		} else {
-			milliseconds = sysTime - time;
-		}
-		long seconds = milliseconds / 1000; // 转换为秒
-		long minutes = seconds / 60; // 转换为分钟
-		long hours = minutes / 60; // 转换为小时
-		long days = hours / 24; // 转换为天数
-		if (!isGo) {
-			return String.valueOf("-" + days);
-		}
-		return String.valueOf(days);
-
-	}
 }

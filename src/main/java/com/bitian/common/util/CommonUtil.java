@@ -1,8 +1,13 @@
 package com.bitian.common.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author admin
@@ -72,6 +77,45 @@ public class CommonUtil {
             }
         }
         return "";
+    }
+
+    public static String getBasePathFromRequest(HttpServletRequest request){
+        int port = request.getServerPort();
+        String scheme = request.getHeader("X-Forwarded-Scheme");
+        if(StringUtils.isEmpty(scheme)) {
+            scheme = request.getScheme();
+        }
+        String basePath = scheme+"://"+request.getServerName()+(port != 80 ? ":" + port : "") + request.getContextPath();
+        basePath = basePath.replaceAll("/+$", "");
+        return basePath;
+    }
+
+    public static String readContentFromRequest(HttpServletRequest request) {
+        try {
+            BufferedReader br = request.getReader();
+            String str;
+            StringBuffer buffer = new StringBuffer();
+            while((str = br.readLine()) != null){
+                buffer.append(str);
+            }
+            return buffer.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 剔除字符串中的html标签
+     * @param strHtml
+     * @return
+     */
+    public static String stripHTML(String strHtml) {
+        //剔出<html>的标签
+        String txtcontent = strHtml.replaceAll("</?[^>]+>", "");
+        //去除字符串中的空格,回车,换行符,制表符
+        txtcontent = txtcontent.replaceAll("<a>\\s*|\t|\r|\n</a>", "");
+        return txtcontent;
     }
 
 }

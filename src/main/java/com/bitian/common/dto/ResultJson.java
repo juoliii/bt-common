@@ -1,32 +1,34 @@
 package com.bitian.common.dto;
 
 import com.bitian.common.enums.ResultCode;
+import lombok.Data;
 
 import java.io.Serializable;
 
-public class ResultJson implements Serializable{
+@Data
+public class ResultJson<T> implements Serializable{
 
     private int code;
     private String msg;
-    private Object data;
+    private T data;
 
-    public static ResultJson success() {
-        return success("");
+    public static <T> ResultJson<T> success() {
+        return success(null);
     }
 
-    public static ResultJson success(Object o) {
+    public static <T> ResultJson<T> success(T o) {
         return new ResultJson(ResultCode.SUCCESS, o);
     }
 
-    public static ResultJson failure(ResultCode code) {
-        return failure(code, "");
+    public static <T> ResultJson<T> failure(ResultCode code) {
+        return failure(code, null);
     }
     
-    public static ResultJson failure(String msg) {
-        return failure(ResultCode.SERVER_ERROR, "").msg(msg);
+    public static <T> ResultJson<T> failure(String msg) {
+        return failure(ResultCode.SERVER_ERROR, null).msg(msg);
     }
 
-    public static ResultJson failure(ResultCode code, Object o) {
+    public static <T> ResultJson<T> failure(ResultCode code, T o) {
         return new ResultJson(code, o);
     }
 
@@ -34,7 +36,7 @@ public class ResultJson implements Serializable{
         setResultCode(resultCode);
     }
 
-    public ResultJson (ResultCode resultCode,Object data) {
+    public ResultJson (ResultCode resultCode,T data) {
         setResultCode(resultCode);
         this.data = data;
     }
@@ -43,34 +45,10 @@ public class ResultJson implements Serializable{
         this.code = resultCode.getCode();
         this.msg = resultCode.getMsg();
     }
-    
-    public int getCode() {
-		return code;
-	}
 
-	public void setCode(int code) {
-		this.code = code;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-	
 	public ResultJson msg(String msg) {
 		this.msg=msg;
 		return this;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public Object getData() {
-		return data;
-	}
-
-	public void setData(Object data) {
-		this.data = data;
 	}
 
 }

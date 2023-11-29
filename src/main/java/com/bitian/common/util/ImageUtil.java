@@ -86,7 +86,22 @@ public class ImageUtil {
 			srcImage = resize(srcImage, width, hight,false);
 		}
 		ImageIO.write(srcImage, imgType, saveToFile);
+	}
 
+	public static boolean isTransparent(BufferedImage bufferedImage) {
+		boolean isTransparent = false;
+		int height = bufferedImage.getHeight();
+		int width = bufferedImage.getWidth();
+		for(int i=0;i<width;i++) {
+			for(int j=0;j<height;j++) {
+				int pixel = bufferedImage.getRGB(i, j);
+				if(pixel >> 24 == 0) {
+					isTransparent = true;
+					break;
+				}
+			}
+		}
+		return isTransparent;
 	}
 
 }

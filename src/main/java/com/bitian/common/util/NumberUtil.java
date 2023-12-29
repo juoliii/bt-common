@@ -35,12 +35,15 @@ public class NumberUtil {
             }
             if (str.contains("%")){
                 str = str.replaceAll("%","");
-                double value= Double.parseDouble(str);
-                return value*0.01;
+                if(NumberUtils.isCreatable(str)){
+                    return Double.parseDouble(str)*0.01;
+                }else {
+                    return 0;
+                }
             }else if(NumberUtils.isCreatable(str)){
                 return Double.parseDouble(str);
             } else{
-                return Double.parseDouble(str);
+                return 0;
             }
         }catch (Exception e){
             return 0d;

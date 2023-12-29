@@ -4,7 +4,7 @@
 
     <groupId>io.github.juoliii</groupId>
     <artifactId>common</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <packaging>jar</packaging>
     <description>common</description>
     <name>${project.groupId}:${project.artifactId}</name>

@@ -23,7 +23,7 @@ public class NumberUtil {
         return v == null ? 0 : v;
     }
 
-    public double percentToDouble(String str,String ...ignores){
+    public static double percentToDouble(String str,String ...ignores){
         try{
             if(StringUtils.isBlank(str)){
                 return 0d;

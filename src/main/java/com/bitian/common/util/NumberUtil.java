@@ -23,15 +23,10 @@ public class NumberUtil {
         return v == null ? 0 : v;
     }
 
-    public static double percentToDouble(String str,String ...ignores){
+    public static double parseDouble(String str){
         try{
             if(StringUtils.isBlank(str)){
                 return 0d;
-            }
-            for (String ignore : ignores) {
-                if(StringUtils.contains(str,ignore)){
-                    return 0d;
-                }
             }
             if (str.contains("%")){
                 str = str.replaceAll("%","");

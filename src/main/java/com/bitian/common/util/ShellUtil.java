@@ -16,13 +16,13 @@ import java.io.PipedOutputStream;
  */
 public class ShellUtil {
 
-    public static void execute(String[] commands,StreamLineCallback callback) throws Exception {
+    public static void execute(String executable,String[] commands,StreamLineCallback callback) throws Exception {
         PipedOutputStream pos=new PipedOutputStream();
         PipedInputStream pis=new PipedInputStream();
         BufferedReader br=null;
         try{
             DefaultExecuteResultHandler handler=new DefaultExecuteResultHandler();
-            CommandLine commandLine =new CommandLine("/bin/sh");
+            CommandLine commandLine =new CommandLine(executable);
             commandLine.addArguments(commands);
             DefaultExecutor exec = new DefaultExecutor();
             exec.setStreamHandler(new PumpStreamHandler(pos));
@@ -44,6 +44,11 @@ public class ShellUtil {
         }
     }
 
+    public static void execute(String[] commands,StreamLineCallback callback) throws Exception {
+        execute("/bin/sh",commands,callback);
+    }
+
+    @FunctionalInterface
     public interface StreamLineCallback{
         void handle(String line);
     }

@@ -48,6 +48,10 @@ public class ResultJson<T> implements Serializable{
         this.data = data;
     }
 
+    public ResultJson () {
+        setResultCode(ResultCode.SUCCESS);
+    }
+
     public ResultJson setResultCode(ResultCode resultCode) {
         this.code = resultCode.getCode();
         this.msg = resultCode.getMsg();

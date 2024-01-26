@@ -1,5 +1,6 @@
 package com.bitian.testmaven;
 
+import com.bitian.common.util.JwtUtils;
 import com.bitian.common.util.LambdaUtil;
 import com.bitian.common.util.ShellUtil;
 import junit.framework.Test;
@@ -8,7 +9,9 @@ import junit.framework.TestSuite;
 import org.apache.commons.exec.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -49,6 +52,11 @@ public class AppTest
     }
 
     public static void main(String[] args) throws Exception {
+        Map<String,Object> map=new HashMap<>();
+        map.put("key","value");
+        String token=JwtUtils.instance().generateToken("zt",map,1000,"fwefwef");
+        System.out.println(token);
+        System.out.println(JwtUtils.instance().getClaims("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6dCIsImV4cCI6MTcwOTg0NTA0NCwiaWF0IjoxNzA2MjQ1MDQ0LCJrZXkiOiJ2YWx1ZSIsImp0aSI6ImIwNmNhMTgwLTBkZjctNDM2MS1iOTVkLWNlZDBmZjcyMzIxYiJ9.GIgA4pwRNdYUnvRDR748aUwa-Mb__Rh61sNey-tnxog","fwefwef"));
 //        System.out.println(ResultJson.mapData().put("wef",12));
 //        List<String> list=new ArrayList<>();
 //        list.add("12");
@@ -56,22 +64,22 @@ public class AppTest
 //        list.stream().map(LambdaUtil.wrap(item->test11(item))).collect(Collectors.toList());
 //        ShellUtil.execute("java",new String[]{"-jar","D:\\workspace\\jiyinzu\\lims\\lims-api\\target\\datashare-lims-0.0.1-SNAPSHOT.jar"},line->System.out.println(line));
 
-        ExecuteResultHandler handler=new ExecuteResultHandler() {
-            @Override
-            public void onProcessComplete(int exitValue) {
-                System.out.println("++++++++++++++++++++++"+exitValue);
-            }
-
-            @Override
-            public void onProcessFailed(ExecuteException e) {
-                System.out.println("==========================="+e);
-            }
-        };
-        CommandLine commandLine =new CommandLine("D:/test.cmd");
+//        ExecuteResultHandler handler=new ExecuteResultHandler() {
+//            @Override
+//            public void onProcessComplete(int exitValue) {
+//                System.out.println("++++++++++++++++++++++"+exitValue);
+//            }
+//
+//            @Override
+//            public void onProcessFailed(ExecuteException e) {
+//                System.out.println("==========================="+e);
+//            }
+//        };
+//        CommandLine commandLine =new CommandLine("D:/test.cmd");
 //        commandLine.addArguments(new String[]{"D:/test.cmd"});
-        DefaultExecutor exec = new DefaultExecutor();
+//        DefaultExecutor exec = new DefaultExecutor();
 //        exec.setStreamHandler(new PumpStreamHandler());
-        exec.execute(commandLine,handler);
-        System.out.println("------------------------------------");
+//        exec.execute(commandLine,handler);
+//        System.out.println("------------------------------------");
     }
 }

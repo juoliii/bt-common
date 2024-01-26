@@ -1,8 +1,8 @@
 package com.bitian.common.util;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import sun.misc.BASE64Encoder;
 /**
  * MD5加密
@@ -10,6 +10,11 @@ import sun.misc.BASE64Encoder;
  *
  */
 public class MD5Util {
+	/**
+	 * base64
+	 * @param str
+	 * @return
+	 */
 	public static String md5(String str){
 		try {
 			MessageDigest md=MessageDigest.getInstance("md5");
@@ -20,6 +25,15 @@ public class MD5Util {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * hex 16进制
+	 * @param str
+	 * @return
+	 */
+	public static String md52Hex(String str){
+		return DigestUtils.md5Hex(str);
 	}
 	
 }

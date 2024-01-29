@@ -1,14 +1,14 @@
 package com.bitian.common.util;
 
+import com.alibaba.fastjson2.JSON;
+import com.bitian.common.dto.User;
 import com.bitian.common.exception.CustomException;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.DefaultJwtParser;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.DigestUtils;
+import io.jsonwebtoken.security.Keys;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class JwtUtils {
 
     private static volatile JwtUtils instance=null;
 
-    private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
+    private static String USER_KEY="jwtUser_POIUQWERTY";
 
     private JwtUtils() {
     }
@@ -35,9 +35,14 @@ public class JwtUtils {
         return instance;
     }
 
-    public Object getValue(String token,String security,String key) {
+    public <T extends User> T getUser(String token, String security,Class<T> cls) {
         final Claims claims = getClaims(token,security);
-        return claims.get(key);
+        String json= (String) claims.get(USER_KEY);
+        if(StringUtils.isNotBlank(json)){
+            return JSON.parseObject(json,cls);
+        }else{
+            return null;
+        }
     }
 
     public <T> T getValue(String token,String security,String key,Class<T> cls) {
@@ -54,24 +59,26 @@ public class JwtUtils {
         }
     }
 
-    public Boolean validate(String token,String security) {
-        return !isTokenExpired(token,security);
+    public boolean validate(String token,String security) {
+        try{
+            return !isTokenExpired(token,security);
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public Claims getClaims(String token,String security) {
         try{
+            SecretKey key = Keys.hmacShaKeyFor(security.getBytes(StandardCharsets.UTF_8));
             Claims claims = Jwts.parser()
-                    .setSigningKey(Base64.encodeBase64String(security.getBytes(StandardCharsets.UTF_8)))
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
             return claims;
         }catch (Exception e){
             throw new CustomException("jwt解析异常->"+e.getMessage());
         }
-    }
-
-    private Date generateExpirationDate(long expiration) {
-        return new Date(System.currentTimeMillis() + expiration * 1000 * 60 * 60);
     }
 
     public Boolean isTokenExpired(String token,String security) {
@@ -82,9 +89,9 @@ public class JwtUtils {
         return expiration.before(new Date());
     }
 
-    public String generateToken(String key,Object value,long expiration,String security){
+    public String generateToken(User user,long expiration,String security){
         Map<String, Object> claims=new HashMap<>();
-        claims.put(key,value);
+        claims.put(USER_KEY,JSON.toJSONString(user));
         return this.generateToken(claims,expiration,security);
     }
 
@@ -101,13 +108,14 @@ public class JwtUtils {
      * @return
      */
     public String generateToken(String subject, Map<String, Object> claims, long expiration,String security) {
+        SecretKey key = Keys.hmacShaKeyFor(security.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setId(UUID.randomUUID().toString())
-                .setIssuedAt(new Date())
-                .setExpiration(generateExpirationDate(expiration))
-                .signWith(SIGNATURE_ALGORITHM, Base64.encodeBase64String(security.getBytes(StandardCharsets.UTF_8)))
+                .claims(claims)
+                .subject(subject)
+                .id(UUID.randomUUID().toString())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expiration * 1000 * 60 * 60))
+                .signWith(key)
                 .compact();
     }
 

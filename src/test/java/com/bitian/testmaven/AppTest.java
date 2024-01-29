@@ -1,5 +1,6 @@
 package com.bitian.testmaven;
 
+import com.bitian.common.dto.User;
 import com.bitian.common.util.JwtUtils;
 import com.bitian.common.util.LambdaUtil;
 import com.bitian.common.util.ShellUtil;
@@ -51,10 +52,33 @@ public class AppTest
         return "wef";
     }
 
+    class TestUser implements User{
+
+        public Object getId() {
+            return null;
+        }
+
+        public String getUsername() {
+            return null;
+        }
+
+        public String getName() {
+            return null;
+        }
+
+        public String getNickname() {
+            return null;
+        }
+
+        public String getAvatar() {
+            return null;
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         Map<String,Object> map=new HashMap<>();
         map.put("key","value");
-        String token=JwtUtils.instance().generateToken("zt",map,1000,"fwefwef");
+        TestUser token=JwtUtils.instance().getUser("","fwef",TestUser.class);
         System.out.println(token);
         System.out.println(JwtUtils.instance().getClaims("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6dCIsImV4cCI6MTcwOTg0NTA0NCwiaWF0IjoxNzA2MjQ1MDQ0LCJrZXkiOiJ2YWx1ZSIsImp0aSI6ImIwNmNhMTgwLTBkZjctNDM2MS1iOTVkLWNlZDBmZjcyMzIxYiJ9.GIgA4pwRNdYUnvRDR748aUwa-Mb__Rh61sNey-tnxog","fwefwef"));
 //        System.out.println(ResultJson.mapData().put("wef",12));

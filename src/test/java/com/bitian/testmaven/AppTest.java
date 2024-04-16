@@ -9,6 +9,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.commons.exec.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,11 +77,11 @@ public class AppTest
     }
 
     public static void main(String[] args) throws Exception {
-        Map<String,Object> map=new HashMap<>();
-        map.put("key","value");
-        TestUser token=JwtUtils.instance().getUser("","fwef",TestUser.class);
-        System.out.println(token);
-        System.out.println(JwtUtils.instance().getClaims("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6dCIsImV4cCI6MTcwOTg0NTA0NCwiaWF0IjoxNzA2MjQ1MDQ0LCJrZXkiOiJ2YWx1ZSIsImp0aSI6ImIwNmNhMTgwLTBkZjctNDM2MS1iOTVkLWNlZDBmZjcyMzIxYiJ9.GIgA4pwRNdYUnvRDR748aUwa-Mb__Rh61sNey-tnxog","fwefwef"));
+//        Map<String,Object> map=new HashMap<>();
+//        map.put("key","value");
+//        TestUser token=JwtUtils.instance().getUser("","fwef",TestUser.class);
+//        System.out.println(token);
+//        System.out.println(JwtUtils.instance().getClaims("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6dCIsImV4cCI6MTcwOTg0NTA0NCwiaWF0IjoxNzA2MjQ1MDQ0LCJrZXkiOiJ2YWx1ZSIsImp0aSI6ImIwNmNhMTgwLTBkZjctNDM2MS1iOTVkLWNlZDBmZjcyMzIxYiJ9.GIgA4pwRNdYUnvRDR748aUwa-Mb__Rh61sNey-tnxog","fwefwef"));
 //        System.out.println(ResultJson.mapData().put("wef",12));
 //        List<String> list=new ArrayList<>();
 //        list.add("12");
@@ -105,5 +106,10 @@ public class AppTest
 //        exec.setStreamHandler(new PumpStreamHandler());
 //        exec.execute(commandLine,handler);
 //        System.out.println("------------------------------------");
+        String [] commands={"/root/test.sh"};
+        File file=new File("/root/error.log");
+        File out=new File("/root/out.log");
+        int id=ShellUtil.run("/bin/sh",commands,null,null);
+        System.out.println(id);
     }
 }

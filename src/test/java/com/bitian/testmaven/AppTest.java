@@ -1,6 +1,7 @@
 package com.bitian.testmaven;
 
 import com.bitian.common.dto.User;
+import com.bitian.common.util.DesUtil;
 import com.bitian.common.util.JwtUtils;
 import com.bitian.common.util.LambdaUtil;
 import com.bitian.common.util.ShellUtil;
@@ -106,10 +107,13 @@ public class AppTest
 //        exec.setStreamHandler(new PumpStreamHandler());
 //        exec.execute(commandLine,handler);
 //        System.out.println("------------------------------------");
-        String [] commands={"/root/test.sh"};
-        File file=new File("/root/error.log");
-        File out=new File("/root/out.log");
-        int id=ShellUtil.run("/bin/sh",commands,null,null);
-        System.out.println(id);
+//        String [] commands={"/root/test.sh"};
+//        File file=new File("/root/error.log");
+//        File out=new File("/root/out.log");
+//        int id=ShellUtil.run("/bin/sh",commands,null,null);
+//        System.out.println(id);
+        DesUtil desUtil=DesUtil.getInstance("jiyinzu2024JIYINZU");
+        System.out.println(desUtil.encrypt("测试wfe"));
+        System.out.println(desUtil.decrypt("6ucFhNOLiEgbEoWpyJfMfw=="));
     }
 }

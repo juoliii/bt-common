@@ -11,6 +11,7 @@ import junit.framework.TestSuite;
 import org.apache.commons.exec.*;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -112,8 +113,11 @@ public class AppTest
 //        File out=new File("/root/out.log");
 //        int id=ShellUtil.run("/bin/sh",commands,null,null);
 //        System.out.println(id);
-        DesUtil desUtil=DesUtil.getInstance("jiyinzu2024JIYINZU");
-        System.out.println(desUtil.encrypt("测试wfe"));
-        System.out.println(desUtil.decrypt("6ucFhNOLiEgbEoWpyJfMfw=="));
+//        DesUtil desUtil=DesUtil.getInstance("jiyinzu2024JIYINZU");
+//        File root=new File("D://logs/");
+//        File file=new File(root,"/");
+//        System.out.println(root.getAbsolutePath());
+//        System.out.println(file.getAbsolutePath());
+        System.out.println(Paths.get("/opt/wef","sdf.txt"));
     }
 }

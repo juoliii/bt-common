@@ -1,5 +1,6 @@
 package com.bitian.common.util;
 
+import com.bitian.common.exception.CustomException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -23,26 +24,42 @@ public class NumberUtil {
         return v == null ? 0 : v;
     }
 
-    public static double parseDouble(String str){
-        try{
-            if(StringUtils.isBlank(str)){
-                return 0d;
-            }
-            if (str.contains("%")){
-                str = str.replaceAll("%","");
-                if(NumberUtils.isCreatable(str)){
-                    return Double.parseDouble(str)*0.01;
-                }else {
-                    return 0;
-                }
-            }else if(NumberUtils.isCreatable(str)){
-                return Double.parseDouble(str);
-            } else{
-                return 0;
-            }
-        }catch (Exception e){
-            return 0d;
+    public static Double parseDouble(String str){
+        if(StringUtils.isBlank(str)){
+            throw new CustomException("数值转换异常");
         }
+        if(NumberUtils.isCreatable(str)){
+            return Double.parseDouble(str);
+        }else if (str.endsWith("%")){
+            str = str.replaceAll("%","");
+            if(NumberUtils.isCreatable(str)){
+                return Double.parseDouble(str)*0.01;
+            }else {
+                throw new CustomException("数值转换异常");
+            }
+        }else{
+            throw new CustomException("数值转换异常");
+        }
+    }
+
+    public static Float parseFloat(String str){
+        Double value=parseDouble(str);
+        return value==null?null:new BigDecimal(value).floatValue();
+    }
+
+    public static Long parseLong(String str){
+        Double value=parseDouble(str);
+        return value==null?null:new BigDecimal(value).longValue();
+    }
+
+    public static Integer parseInt(String str){
+        Double value=parseDouble(str);
+        return value==null?null:new BigDecimal(value).intValue();
+    }
+
+    public static Short parseShort(String str){
+        Double value=parseDouble(str);
+        return value==null?null:new BigDecimal(value).shortValue();
     }
 
     public static boolean isNumber(String value,String ...ignores){

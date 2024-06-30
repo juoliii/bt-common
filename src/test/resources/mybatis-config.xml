@@ -1,0 +1,22 @@
+<!-- mybatis-config.xml -->
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <plugins>
+        <plugin interceptor="com.bitian.common.mybatis.SuperQueryInterceptor"></plugin>
+    </plugins>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://192.168.31.99:3306/hdfud"/>
+                <property name="username" value="root"/>
+                <property name="password" value="1qaz2wsx"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="TestMapper.xml" />
+<!--        <package name="com.bitian.testmaven.mapper" />-->
+    </mappers>
+</configuration>

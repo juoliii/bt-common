@@ -8,7 +8,15 @@ import com.bitian.common.util.ShellUtil;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.select.PlainSelect;
+import net.sf.jsqlparser.statement.select.Select;
 import org.apache.commons.exec.*;
+import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -21,7 +29,7 @@ import java.util.stream.Collectors;
 /**
  * Unit test for simple App.
  */
-public class AppTest 
+public class AppTest
     extends TestCase
 {
     /**
@@ -118,6 +126,21 @@ public class AppTest
 //        File file=new File(root,"/");
 //        System.out.println(root.getAbsolutePath());
 //        System.out.println(file.getAbsolutePath());
-        System.out.println(Paths.get("/opt/wef","sdf.txt"));
+//        System.out.println(Paths.get("/opt/wef","sdf.txt"));
+        Statement statement=CCJSqlParserUtil.parse("select a.* from wef a left join test t on t.aid=a.id where a.name ='wef' and exists(select 1 from c where id=a.cid)");
+        System.out.println(statement.getClass());
+//        if(statement instanceof PlainSelect){
+            PlainSelect select= (PlainSelect) statement;
+            Expression where = select.getWhere();
+            if (where != null) {
+                // 如果已存在WHERE子句，添加新条件
+                AndExpression and = new AndExpression(where, CCJSqlParserUtil.parseCondExpression(" or (name = 'John Doe' or b=2) and c=3"));
+                select.setWhere(and);
+            } else {
+                // 如果不存在WHERE子句，直接设置新条件
+                select.setWhere(CCJSqlParserUtil.parseCondExpression("name = 'John Doe'"));
+            }
+            System.out.println(select.getWhere());
+//        }
     }
 }

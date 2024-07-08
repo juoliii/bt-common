@@ -4,7 +4,7 @@
 
     <groupId>io.github.juoliii</groupId>
     <artifactId>common</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <packaging>jar</packaging>
     <description>common</description>
     <name>${project.groupId}:${project.artifactId}</name>
@@ -97,26 +97,6 @@
             <artifactId>spring-security-web</artifactId>
             <version>5.7.4</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.13</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.jsqlparser</groupId>
-            <artifactId>jsqlparser</artifactId>
-            <version>4.9</version>
-        </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.31</version>
-            <scope>runtime</scope>
         </dependency>
 
     </dependencies>

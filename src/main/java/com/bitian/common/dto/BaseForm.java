@@ -21,4 +21,5 @@ public class BaseForm implements Serializable {
     private String sortType;
     private List<QueryGroup> _groups=new ArrayList<>();
     private Map<String,Object> _sql_data;
+    private String _sql;
 }

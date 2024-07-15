@@ -19,6 +19,7 @@ public class BaseForm implements Serializable {
     private Integer ps=20;
     private String sortName;
     private String sortType;
+    private ExportParams exportParams=new ExportParams();
     private List<QueryGroup> _groups=new ArrayList<>();
     private Map<String,Object> _sql_data;
     private String _sql;

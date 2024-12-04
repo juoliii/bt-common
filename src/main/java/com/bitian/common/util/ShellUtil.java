@@ -1,5 +1,6 @@
 package com.bitian.common.util;
 
+import com.bitian.common.dto.MyCommand;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
@@ -13,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author admin
@@ -20,7 +22,6 @@ import java.util.List;
 public class ShellUtil {
 
     public static int run(String executable, List<String> commands, String out, String error) throws Exception {
-        String[] array = commands.toArray(new String[commands.size()]);
         File outFile = null,errorFile=null;
         if(StringUtils.isNotBlank(out)){
             outFile=new File(out);
@@ -28,15 +29,15 @@ public class ShellUtil {
         if(StringUtils.isNotBlank(error)){
             errorFile=new File(error);
         }
-        return run(executable,array,outFile,errorFile);
+        return run(executable,commands,outFile,errorFile);
     }
 
     public static int run(String executable, List<String> commands, File out, File error) throws Exception {
-        String[] array = commands.toArray(new String[commands.size()]);
-        return run(executable,array,out,error);
+        List<MyCommand> tmp=commands.stream().map(t->new MyCommand(t,true)).collect(Collectors.toList());
+        return _run(executable,tmp,out,error);
     }
 
-    public static int run(String executable, String[] commands, File out,File error) throws Exception {
+    public static int _run(String executable, List<MyCommand> commands, File out, File error) throws Exception {
         FileOutputStream outStream=null;
         if(out!=null){
             if(out.exists()) FileUtils.touch(out);
@@ -50,7 +51,9 @@ public class ShellUtil {
         try{
             DefaultExecuteResultHandler handler=new DefaultExecuteResultHandler();
             CommandLine commandLine =new CommandLine(executable);
-            commandLine.addArguments(commands);
+            for (MyCommand command : commands) {
+                commandLine.addArgument(command.getCommand(),command.isQuota());
+            }
             DefaultExecutor exec = new DefaultExecutor();
             exec.setStreamHandler(new PumpStreamHandler(outStream,errorStream));
             exec.execute(commandLine,handler);

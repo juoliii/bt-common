@@ -1,5 +1,6 @@
 package com.bitian.common.dto;
 
+import com.bitian.common.enums.QueryConditionType;
 import com.bitian.common.enums.SuperQueryCondition;
 import com.bitian.common.enums.SuperQueryType;
 import lombok.Data;
@@ -34,6 +35,8 @@ public class QueryGroup {
         private Object value;
         //日期类型
         private String dateType;
+        //右侧类型
+        private QueryConditionType conditionType=QueryConditionType.specificValue;
 
     }
 

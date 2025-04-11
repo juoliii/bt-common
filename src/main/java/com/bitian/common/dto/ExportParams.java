@@ -1,6 +1,7 @@
 package com.bitian.common.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,9 @@ import java.util.List;
  * @author admin
  */
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ExportParams {
 
     private String code;
@@ -20,8 +23,9 @@ public class ExportParams {
     private String format="xlsx";
 
     @Data
-    @NoArgsConstructor
     @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class Column{
         private String key;
         private String title;

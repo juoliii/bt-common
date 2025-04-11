@@ -2,13 +2,18 @@ package com.bitian.common.dto;
 
 import com.bitian.common.enums.ResultCode;
 import com.bitian.common.exception.CustomException;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@AllArgsConstructor
+@Builder
 public class ResultJson<T> implements Serializable{
 
     private int code;

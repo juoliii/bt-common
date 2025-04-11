@@ -4,7 +4,7 @@
 
     <groupId>io.github.juoliii</groupId>
     <artifactId>common</artifactId>
-    <version>0.2.6</version>
+    <version>0.2.7</version>
     <packaging>jar</packaging>
     <description>common</description>
     <name>${project.groupId}:${project.artifactId}</name>
@@ -91,14 +91,6 @@
         <url>https://github.com/juoliii/bt-common.git</url>
         <tag>v${project.version}</tag>
     </scm>
-
-    <distributionManagement>
-<!--        <repository>-->
-<!--            <id>mymaven</id>-->
-<!--            <url>https://nexus.netman.vip/repository/mymaven/</url>-->
-<!--        </repository>-->
-    </distributionManagement>
-
 
     <build>
         <plugins>

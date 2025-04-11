@@ -3,7 +3,10 @@ package com.bitian.common.dto;
 import com.bitian.common.enums.QueryConditionType;
 import com.bitian.common.enums.SuperQueryCondition;
 import com.bitian.common.enums.SuperQueryType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +15,9 @@ import java.util.List;
  * @author admin
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class QueryGroup {
 
     private SuperQueryCondition condition;
@@ -19,6 +25,9 @@ public class QueryGroup {
     private List<QueryDetail> details=new ArrayList<>();
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class QueryDetail {
 
         //是否自定义字段

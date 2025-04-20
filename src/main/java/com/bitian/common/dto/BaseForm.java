@@ -16,7 +16,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(builderMethodName = "br")
 public class BaseForm implements Serializable {
     private Long id;
     private List<Long> ids;
@@ -29,4 +29,9 @@ public class BaseForm implements Serializable {
     private List<QueryGroup> _groups=new ArrayList<>();
     private Map<String,Object> _sql_data;
     private String _sql;
+    private Integer _total;
+
+    public <T> Page<T> toPage(List<T> list){
+        return new Page<>(this.pn,this.ps,this._total,list);
+    }
 }

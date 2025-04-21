@@ -29,9 +29,21 @@ public class BaseForm implements Serializable {
     private List<QueryGroup> _groups=new ArrayList<>();
     private Map<String,Object> _sql_data;
     private String _sql;
+    /**
+     * 分页查询总数量
+     */
     private Integer _total;
+    /**
+     * 是否开启分页
+     */
+    private Boolean pagination=false;
 
     public <T> Page<T> toPage(List<T> list){
         return new Page<>(this.pn,this.ps,this._total,list);
+    }
+
+    public BaseForm pagination(boolean param){
+        this.pagination=param;
+        return this;
     }
 }

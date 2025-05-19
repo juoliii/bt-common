@@ -25,7 +25,7 @@ public class UploadRateLimitRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public ServletInputStream getInputStream() throws IOException {
-        return new UploadRateLimitServletInputStream(super.getInputStream(),1024*1024);
+        return new UploadRateLimitServletInputStream(super.getInputStream(),limit);
     }
 
 }

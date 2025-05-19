@@ -118,4 +118,18 @@ public class CommonUtil {
         return txtcontent;
     }
 
+    /**
+     * 是否是中文
+     * @param c
+     * @return
+     */
+    public static boolean isChinese(char c) {
+        String regEx = "[\u4e00-\u9fa5]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(c + "");
+        if (m.find())
+            return true;
+        return false;
+    }
+
 }

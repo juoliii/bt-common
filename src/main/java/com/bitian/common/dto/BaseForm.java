@@ -23,6 +23,10 @@ public class BaseForm implements Serializable {
     private String key;
     private Integer pn=1;
     private Integer ps=20;
+
+    private Integer pageNum;
+    private Integer pageSize;
+
     private String sortName;
     private String sortType;
     private ExportParams exportParams=new ExportParams();
@@ -45,5 +49,15 @@ public class BaseForm implements Serializable {
     public BaseForm pagination(boolean param){
         this.pagination=param;
         return this;
+    }
+
+    public void setPn(Integer pn) {
+        this.pn = pn;
+        this.pageNum=pn;
+    }
+
+    public void setPs(Integer ps) {
+        this.ps = ps;
+        this.pageSize=ps;
     }
 }

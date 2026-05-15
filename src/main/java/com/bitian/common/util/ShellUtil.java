@@ -13,7 +13,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -33,11 +35,16 @@ public class ShellUtil {
     }
 
     public static int run(String executable, List<String> commands, File out, File error) throws Exception {
-        List<MyCommand> tmp=commands.stream().map(t->new MyCommand(t,true)).collect(Collectors.toList());
-        return _run(executable,tmp,out,error);
+        List<MyCommand> tmpCommands=commands.stream().map(t->new MyCommand(t,true)).collect(Collectors.toList());
+        return _run(executable,tmpCommands,new HashMap<>(),out,error);
     }
 
-    public static int _run(String executable, List<MyCommand> commands, File out, File error) throws Exception {
+    public static int run(String executable, List<String> commands, Map<String,String> envirments,File out, File error) throws Exception {
+        List<MyCommand> tmpCommands=commands.stream().map(t->new MyCommand(t,true)).collect(Collectors.toList());
+        return _run(executable,tmpCommands,envirments,out,error);
+    }
+
+    public static int _run(String executable, List<MyCommand> commands, Map<String,String> envirments, File out, File error) throws Exception {
         FileOutputStream outStream=null;
         if(out!=null){
             if(out.exists()) FileUtils.touch(out);
@@ -56,7 +63,7 @@ public class ShellUtil {
             }
             DefaultExecutor exec = new DefaultExecutor();
             exec.setStreamHandler(new PumpStreamHandler(outStream,errorStream));
-            exec.execute(commandLine,handler);
+            exec.execute(commandLine,envirments,handler);
             handler.waitFor();
             return handler.getExitValue();
         }catch (Exception e){

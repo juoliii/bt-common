@@ -7,8 +7,16 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
+/**
+ * 拼音util
+ */
 public class PyUtil {
 
+	/**
+	 * 获取汉字的全部拼音
+	 * @param src
+	 * @return
+	 */
 	public static String getFull(String src) {
 
 		char[] srcChar = src.toCharArray();
@@ -25,8 +33,7 @@ public class PyUtil {
 				// 判断是否为汉字字符
 				if (Character.toString(srcChar[i])
 						.matches("[\\u4E00-\\u9FA5]+")) {
-					srcArry = PinyinHelper.toHanyuPinyinStringArray(srcChar[i],
-							format);
+					srcArry = PinyinHelper.toHanyuPinyinStringArray(srcChar[i], format);
 					result += srcArry[0];
 				} else{
 					result += Character.toString(srcChar[i]);
@@ -39,6 +46,11 @@ public class PyUtil {
 		return result;
 	}
 
+	/**
+	 * 获取汉字的首字母拼音
+	 * @param str
+	 * @return
+	 */
 	public static String getFirst(String str) {
 
 		String result = "";

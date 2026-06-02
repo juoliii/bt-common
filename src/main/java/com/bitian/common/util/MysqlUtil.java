@@ -1,75 +1,110 @@
 package com.bitian.common.util;
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DaemonExecutor;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * MySQL 备份工具类。
+ * <p>
+ * 通过调用 {@code mysqldump} 命令完成数据库备份，
+ * 底层委托 {@link ShellUtil} 执行 Shell 命令。
+ *
  * @author admin
  */
 public class MysqlUtil {
 
-    public static String backup(File file, String host, int port, String database, String username, String password, String defaultCharset) {
-        List<String> args=new ArrayList<>();
+    /**
+     * 使用默认参数备份 MySQL 数据库（默认字符集 utf8）。
+     *
+     * @param file     备份 SQL 文件输出路径
+     * @param host     数据库主机
+     * @param port     数据库端口
+     * @param database 数据库名称
+     * @param username 用户名
+     * @param password 密码
+     * @return 错误信息（为空字符串表示成功）
+     */
+    public static String backup(File file, String host, int port, String database,
+                                String username, String password) {
+        return backup(file, host, port, database, username, password, "utf8");
+    }
+
+    /**
+     * 使用默认参数备份 MySQL 数据库。
+     *
+     * @param file           备份 SQL 文件输出路径
+     * @param host           数据库主机
+     * @param port           数据库端口
+     * @param database       数据库名称
+     * @param username       用户名
+     * @param password       密码
+     * @param defaultCharset 默认字符集
+     * @return 错误信息（为空字符串表示成功）
+     */
+    public static String backup(File file, String host, int port, String database,
+                                String username, String password, String defaultCharset) {
+        List<String> args = new ArrayList<>();
         args.add("--ssl-mode=DISABLED");
         args.add("--skip-lock-tables");
         args.add("--routines");
         args.add("--add-drop-table");
         args.add("--disable-keys");
         args.add("--extended-insert");
-        args.add("--default-character-set="+defaultCharset);
-        return backup(file,args,host,port,database,username,password);
+        args.add("--default-character-set=" + defaultCharset);
+        return backup(file, args, host, port, database, username, password);
     }
 
-    public static String backup(File file, List<String> args, String host, int port, String database, String username, String password){
-        FileOutputStream susStream=null;
-        ByteArrayOutputStream errStream=null;
-        int result=-1;
-        try{
-            if(!file.getParentFile().exists()){
-                file.getParentFile().mkdirs();
+    /**
+     * 使用自定义参数备份 MySQL 数据库。
+     *
+     * @param file     备份 SQL 文件输出路径
+     * @param args     mysqldump 额外参数列表
+     * @param host     数据库主机
+     * @param port     数据库端口
+     * @param database 数据库名称
+     * @param username 用户名
+     * @param password 密码
+     * @return 错误信息（为空字符串表示成功）
+     */
+    public static String backup(File file, List<String> args, String host, int port,
+                                String database, String username, String password) {
+        // 确保输出目录存在
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+
+        // 构建 mysqldump 命令参数
+        List<String> commands = new ArrayList<>();
+        commands.add("-h");
+        commands.add(host);
+        commands.add("-P");
+        commands.add(String.valueOf(port));
+        commands.add("-u");
+        commands.add(username);
+        commands.add("-p" + password);
+        commands.addAll(args);
+        commands.add(database);
+
+        // 使用临时文件捕获错误输出
+        File errorFile = null;
+        try {
+            errorFile = File.createTempFile("mysqldump_err_", ".log");
+            int exitCode = ShellUtil.run("mysqldump", commands, file, errorFile);
+            if (exitCode != 0) {
+                return new String(Files.readAllBytes(errorFile.toPath()), StandardCharsets.UTF_8);
             }
-            DefaultExecutor exec = new DaemonExecutor();
-            //接收正常结果流
-            susStream = new FileOutputStream(file);
-            //接收异常结果流
-            errStream = new ByteArrayOutputStream();
-            CommandLine commandLine =new CommandLine("mysqldump");
-            commandLine.addArgument("-h");
-            commandLine.addArgument(host);
-            commandLine.addArgument("-P");
-            commandLine.addArgument(port+"");
-            commandLine.addArgument("-u");
-            commandLine.addArgument(username);
-            commandLine.addArgument("-p"+password);
-            args.forEach(item->{
-                commandLine.addArguments(item);
-            });
-            commandLine.addArgument(database);
-            PumpStreamHandler streamHandler = new PumpStreamHandler(susStream, errStream);
-            exec.setStreamHandler(streamHandler);
-            result=exec.execute(commandLine);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            String error="";
-            if(result!=0){
-                error=new String(errStream.toByteArray(), StandardCharsets.UTF_8);
+            return "";
+        } catch (IOException e) {
+            return e.getMessage();
+        } finally {
+            if (errorFile != null && errorFile.exists()) {
+                errorFile.delete();
             }
-            IOUtils.closeQuietly(susStream);
-            IOUtils.closeQuietly(errStream);
-            return error;
         }
     }
-
 }

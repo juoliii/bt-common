@@ -2,6 +2,8 @@ package com.bitian.testmaven;
 
 import com.bitian.common.dto.BaseForm;
 import com.bitian.common.dto.User;
+import com.bitian.common.util.PrimaryKeyUtil;
+import com.bitian.common.util.SystemInfo;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -38,34 +40,8 @@ public class AppTest
         assertTrue( true );
     }
 
-    public static String test11(String var) throws Exception{
-        System.out.println(var);
-        return "wef";
-    }
-
-    class TestUser implements User{
-
-        public Object getId() {
-            return null;
-        }
-
-        public String getUsername() {
-            return null;
-        }
-
-        public String getName() {
-            return null;
-        }
-
-        public String getNickname() {
-            return null;
-        }
-
-        public String getAvatar() {
-            return null;
-        }
-    }
 
     public static void main(String[] args) throws Exception {
+        System.out.println(SystemInfo.getInstance().getNetworkInterfaces());
     }
 }
